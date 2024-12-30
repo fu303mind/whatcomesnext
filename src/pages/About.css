@@ -1,0 +1,170 @@
+/* Modern minimalist styling */
+.about-container {
+  width: 100%;
+  background-color: #ffffff;
+  color: #171717;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+section {
+  padding: 120px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+/* Hero Section */
+.hero-section {
+  min-height: 100vh;
+  background-color: #000000;
+  color: #ffffff;
+  justify-content: center;
+  text-align: center;
+}
+
+.hero-section h1 {
+  font-size: 56px;
+  font-weight: 500;
+  letter-spacing: -0.5px;
+  margin-bottom: 24px;
+  max-width: 800px;
+}
+
+.hero-text {
+  font-size: 20px;
+  font-weight: 400;
+  opacity: 0.9;
+}
+
+/* Feature Section */
+.feature-section {
+  background-color: #ffffff;
+  text-align: center;
+}
+
+.feature-content {
+  max-width: 800px;
+}
+
+h2 {
+  font-size: 40px;
+  font-weight: 500;
+  margin-bottom: 24px;
+  letter-spacing: -0.5px;
+}
+
+/* Stats Section */
+.stats-section {
+  background-color: #f8f8f8;
+  flex-direction: row;
+  justify-content: center;
+  gap: 80px;
+  padding: 100px 24px;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.stat-number {
+  font-size: 48px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.stat-label {
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  opacity: 0.7;
+}
+
+/* Mission Section */
+.mission-section {
+  background-color: #000000;
+  color: #ffffff;
+  text-align: center;
+}
+
+.mission-content {
+  max-width: 800px;
+}
+
+/* Vision Section */
+.vision-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 120px 24px;
+}
+
+.vision-content {
+  padding: 0 40px;
+}
+
+.vision-content h3 {
+  font-size: 28px;
+  font-weight: 500;
+  margin-bottom: 24px;
+}
+
+/* Closing Section */
+.closing-section {
+  background-color: #000000;
+  color: #ffffff;
+  text-align: center;
+  padding: 200px 24px;
+}
+
+.closing-text {
+  font-size: 32px;
+  font-weight: 500;
+  letter-spacing: -0.5px;
+}
+
+/* General Text Styles */
+p {
+  font-size: 18px;
+  line-height: 1.6;
+  opacity: 0.9;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hero-section h1 {
+    font-size: 40px;
+  }
+
+  h2 {
+    font-size: 32px;
+  }
+
+  .stats-section {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .vision-section {
+    grid-template-columns: 1fr;
+    gap: 60px;
+  }
+
+  .vision-content {
+    padding: 0;
+  }
+
+  .closing-text {
+    font-size: 24px;
+  }
+}
+
+/* Smooth Scroll */
+html {
+  scroll-behavior: smooth;
+}

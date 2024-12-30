@@ -1,159 +1,148 @@
 import React, { useState, useEffect } from 'react';
-import ImageCarousel from '../components/ImageCarousel.js';
-import '../styles/Portfolio.css';
-
-// Local images for development
-const localImages = [
-  {
-    url: '/portfolio-img/building-1.jpg',
-    title: 'Building 1'
-  },
-  {
-    url: '/portfolio-img/anotherbuilding.jpg',
-    title: 'Another Building'
-  },
-  {
-    url: '/portfolio-img/green buildning.jpg',
-    title: 'Green Building'
-  },
-  {
-    url: '/portfolio-img/randombuilding.jpg',
-    title: 'Random Building'
-  }
-];
+import './Portfolio.css';
 
 const Portfolio = () => {
   const [images, setImages] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [showCarousel, setShowCarousel] = useState(false);
-  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const loadImages = async () => {
-      setLoading(true);
-      setError(null);
-      
-      try {
-        // In development, use local images
-        if (process.env.NODE_ENV === 'development') {
-          setImages(localImages);
-          setLoading(false);
-          return;
-        }
-
-        // In production, load from Firebase Storage
-        const { storage } = await import('../firebase/config.js');
-        const { ref, listAll, getDownloadURL } = await import('firebase/storage');
-        
-        const storageRef = ref(storage, 'portfolio-img');
-        const result = await listAll(storageRef);
-        
-        if (result.items.length === 0) {
-          setError('No images found');
-          setLoading(false);
-          return;
-        }
-
-        const imagePromises = result.items.map(async (imageRef) => {
-          try {
-            const url = await getDownloadURL(imageRef);
-            return {
-              url,
-              title: imageRef.name
-                .replace(/\.[^/.]+$/, '')
-                .split('_')
-                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-                .join(' ')
-            };
-          } catch (err) {
-            console.error('Error getting download URL:', err);
-            return null;
-          }
-        });
-
-        const loadedImages = await Promise.all(imagePromises);
-        const validImages = loadedImages.filter(img => img !== null);
-        
-        if (validImages.length === 0) {
-          setError('No images could be loaded');
-        } else {
-          setImages(validImages);
-        }
-      } catch (err) {
-        console.error('Error loading images:', err);
-        setError('Error loading images');
-      } finally {
-        setLoading(false);
+    // Using process.env.PUBLIC_URL to ensure correct path resolution
+    const imageList = [
+      { 
+        id: 1, 
+        src: `${process.env.PUBLIC_URL}/portfolio/building-1.jpg`, 
+        title: 'Modern Architecture', 
+        category: 'Architecture' 
+      },
+      { 
+        id: 2, 
+        src: `${process.env.PUBLIC_URL}/portfolio/anotherbuilding.jpg`, 
+        title: 'Urban Design', 
+        category: 'Architecture' 
+      },
+      { 
+        id: 3, 
+        src: `${process.env.PUBLIC_URL}/portfolio/green buildning.jpg`, 
+        title: 'Sustainable Building', 
+        category: 'Architecture' 
+      },
+      { 
+        id: 4, 
+        src: `${process.env.PUBLIC_URL}/portfolio/randombuilding.jpg`, 
+        title: 'Contemporary Design', 
+        category: 'Architecture' 
       }
-    };
-
-    loadImages();
+    ];
+    
+    setImages(imageList);
+    setIsLoading(false);
   }, []);
 
-  const handleImageClick = (index) => {
-    setSelectedImageIndex(index);
-    setShowCarousel(true);
+  const handleImageClick = (image, index) => {
+    setSelectedImage(image);
+    setCurrentIndex(index);
+    document.body.style.overflow = 'hidden';
   };
 
-  const handleCloseCarousel = () => {
-    setShowCarousel(false);
+  const handleClose = () => {
+    setSelectedImage(null);
+    document.body.style.overflow = 'auto';
   };
 
-  if (loading) {
-    return (
-      <div className="portfolio-page">
-        <h1>Our Portfolio</h1>
-        <div className="loading">Loading...</div>
-      </div>
+  const handlePrevious = () => {
+    setCurrentIndex((prevIndex) => 
+      prevIndex === 0 ? images.length - 1 : prevIndex - 1
     );
-  }
+    setSelectedImage(images[currentIndex === 0 ? images.length - 1 : currentIndex - 1]);
+  };
 
-  if (error) {
+  const handleNext = () => {
+    setCurrentIndex((prevIndex) => 
+      prevIndex === images.length - 1 ? 0 : prevIndex + 1
+    );
+    setSelectedImage(images[currentIndex === images.length - 1 ? 0 : currentIndex + 1]);
+  };
+
+  const handleKeyDown = (e) => {
+    if (!selectedImage) return;
+    
+    if (e.key === 'Escape') handleClose();
+    if (e.key === 'ArrowLeft') handlePrevious();
+    if (e.key === 'ArrowRight') handleNext();
+  };
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedImage, currentIndex]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  if (isLoading) {
     return (
-      <div className="portfolio-page">
-        <h1>Our Portfolio</h1>
-        <div className="error">Error: {error}</div>
+      <div className="portfolio-loading">
+        <div className="loading-spinner"></div>
       </div>
     );
   }
 
   return (
-    <div className="portfolio-page">
-      <h1>Our Portfolio</h1>
-      <div className="portfolio-description">
-        <p>Explore our diverse collection of innovative designs and creative solutions</p>
+    <div className="portfolio-container">
+      <div className="portfolio-hero">
+        <h1>Portfolio</h1>
+        <p>Explore our latest works</p>
       </div>
+
       <div className="portfolio-grid">
         {images.map((image, index) => (
-          <div
-            key={index}
+          <div 
+            key={image.id} 
             className="portfolio-item"
-            onClick={() => handleImageClick(index)}
+            onClick={() => handleImageClick(image, index)}
           >
-            <img 
-              src={image.url} 
-              alt={image.title}
-              loading="lazy"
-              onError={(e) => {
-                console.error('Image load error:', image.url);
-                e.target.onerror = null;
-                e.target.src = `https://via.placeholder.com/400x300?text=${encodeURIComponent(image.title)}`;
-              }}
-            />
+            <img src={image.src} alt={image.title} />
             <div className="portfolio-item-overlay">
               <h3>{image.title}</h3>
+              <p>{image.category}</p>
             </div>
           </div>
         ))}
       </div>
 
-      {showCarousel && (
-        <ImageCarousel
-          images={images}
-          selectedIndex={selectedImageIndex}
-          onClose={handleCloseCarousel}
-        />
+      {selectedImage && (
+        <div className="carousel-overlay" onClick={handleClose}>
+          <div className="carousel-content" onClick={e => e.stopPropagation()}>
+            <button className="carousel-close" onClick={handleClose}>×</button>
+            <button className="carousel-nav prev" onClick={handlePrevious}>‹</button>
+            <button className="carousel-nav next" onClick={handleNext}>›</button>
+            
+            <div className="carousel-image-container">
+              <img 
+                src={selectedImage.src} 
+                alt={selectedImage.title} 
+                className="carousel-image"
+              />
+            </div>
+            
+            <div className="carousel-info">
+              <h2>{selectedImage.title}</h2>
+              <p>{selectedImage.category}</p>
+            </div>
+            
+            <div className="carousel-dots">
+              {images.map((_, index) => (
+                <button
+                  key={index}
+                  className={`carousel-dot ${index === currentIndex ? 'active' : ''}`}
+                  onClick={() => {
+                    setCurrentIndex(index);
+                    setSelectedImage(images[index]);
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

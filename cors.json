@@ -1,8 +1,8 @@
 [
   {
-    "origin": ["http://localhost:3000", "https://whatcomesnext-2631d.web.app", "https://whatcomesnext-2631d.firebaseapp.com"],
+    "origin": ["*"],
     "method": ["GET", "HEAD", "PUT", "POST", "DELETE", "OPTIONS"],
-    "responseHeader": ["Content-Type", "Authorization", "Content-Length", "User-Agent", "x-goog-resumable", "x-goog-*"],
+    "responseHeader": ["Content-Type", "Authorization", "Content-Length", "User-Agent", "x-goog-resumable", "x-goog-*", "Access-Control-Allow-Origin"],
     "maxAgeSeconds": 3600
   }
 ]

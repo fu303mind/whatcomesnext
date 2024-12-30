@@ -1,0 +1,190 @@
+.services-container {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.service-section {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 80px 24px;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.service-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.service-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.9;
+  z-index: -1;
+}
+
+/* Dark sections (Videography and Software) */
+.videography::before,
+.software::before {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    url('https://source.unsplash.com/random/1920x1080/?videography,cinema');
+}
+
+.software::before {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    url('https://source.unsplash.com/random/1920x1080/?software,technology');
+}
+
+.videography .service-content,
+.software .service-content {
+  color: white;
+  background: rgba(0, 0, 0, 0.7);
+}
+
+/* Light section (Photography) */
+.photography::before {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)),
+    url('https://source.unsplash.com/random/1920x1080/?photography,camera');
+}
+
+.photography .service-content {
+  color: #171717;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.photography .service-cta {
+  background: #171717;
+  color: white;
+}
+
+.photography .service-cta:hover {
+  background: #404040;
+}
+
+.service-content {
+  max-width: 800px;
+  text-align: center;
+  padding: 40px;
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.service-content h2 {
+  font-size: 48px;
+  font-weight: 500;
+  margin: 0 0 16px;
+  letter-spacing: -0.5px;
+}
+
+.service-content p {
+  font-size: 20px;
+  opacity: 0.9;
+  margin: 0 0 48px;
+}
+
+.service-features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  margin-bottom: 48px;
+}
+
+.feature {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.feature-value {
+  font-size: 32px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.feature-label {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.7;
+}
+
+/* Dark theme CTA (Videography and Software) */
+.videography .service-cta,
+.software .service-cta {
+  background: white;
+  color: black;
+  border: none;
+  padding: 16px 48px;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.videography .service-cta:hover,
+.software .service-cta:hover {
+  transform: translateY(-2px);
+  background-color: #f0f0f0;
+}
+
+@media (max-width: 768px) {
+  .service-section {
+    padding: 60px 20px;
+  }
+
+  .service-content {
+    padding: 30px 20px;
+  }
+
+  .service-content h2 {
+    font-size: 36px;
+  }
+
+  .service-content p {
+    font-size: 18px;
+  }
+
+  .service-features {
+    gap: 20px;
+  }
+
+  .feature-value {
+    font-size: 24px;
+  }
+
+  .feature-label {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .service-features {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .service-content h2 {
+    font-size: 32px;
+  }
+
+  .videography .service-cta,
+  .software .service-cta,
+  .photography .service-cta {
+    width: 100%;
+    padding: 14px 24px;
+  }
+}
