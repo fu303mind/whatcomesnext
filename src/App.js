@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import './App.css';
 import './styles/Pages.css';
+import ErrorBoundary from './components/ErrorBoundary.js';
 
 // Import pages
-import Portfolio from './pages/Portfolio';
-import Services from './pages/Services';
-import About from './pages/About';
-import Contact from './pages/Contact';
+import Portfolio from './pages/Portfolio.js';
+import Services from './pages/Services.js';
+import About from './pages/About.js';
+import Contact from './pages/Contact.js';
 
 function App() {
   const [activeSection, setActiveSection] = useState(0);
@@ -82,9 +83,13 @@ function App() {
 
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/portfolio" element={<Portfolio />} />
-          <Route path="/services" element={<Services />} />
           <Route path="/about" element={<About />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/portfolio" element={
+            <ErrorBoundary>
+              <Portfolio />
+            </ErrorBoundary>
+          } />
           <Route path="/contact" element={<Contact />} />
         </Routes>
       </div>

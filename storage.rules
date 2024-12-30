@@ -1,0 +1,22 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /{allPaths=**} {
+      allow read: if true
+        || request.origin == 'http://localhost:3000'
+        || request.origin == 'https://whatcomesnext-2631d.web.app'
+        || request.origin == 'https://whatcomesnext-2631d.firebaseapp.com';
+      allow write: if false;  // Disable writing through client-side code
+      
+      // Add CORS headers
+      function corsHeaders() {
+        return response.headers.add(
+          'Access-Control-Allow-Origin', '*',
+          'Access-Control-Allow-Methods', 'GET, HEAD, PUT, POST, DELETE, OPTIONS',
+          'Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, User-Agent, x-goog-resumable'
+        );
+      }
+    }
+  }
+}

@@ -21,15 +21,9 @@ const ImageCarousel = ({ images, selectedIndex, onClose }) => {
         >
           {images.map((item, index) => (
             <div key={index} className="carousel-slide">
-              <img src={item.src} alt={item.title} />
+              <img src={item.url} alt={item.title} />
               <div className="carousel-details">
                 <h3>{item.title}</h3>
-                <p>{item.description}</p>
-                <div className="carousel-tags">
-                  {item.tags.map((tag, tagIndex) => (
-                    <span key={tagIndex} className="carousel-tag">{tag}</span>
-                  ))}
-                </div>
               </div>
             </div>
           ))}
