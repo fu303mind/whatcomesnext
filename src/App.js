@@ -1,46 +1,44 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import './App.css';
+import './styles/Pages.css';
+
+// Import pages
+import Portfolio from './pages/Portfolio';
+import Services from './pages/Services';
+import About from './pages/About';
+import Contact from './pages/Contact';
 
 function App() {
   const [activeSection, setActiveSection] = useState(0);
-
   const sections = [
     {
-      image: 'https://source.unsplash.com/random/1920x1080/?photography,studio',
-      title: 'CAPTURE MOMENTS',
-      subtitle: 'Professional Photography Studio'
+      title: "Creative Solutions",
+      subtitle: "Innovative designs for modern challenges",
+      image: "https://source.unsplash.com/random/1920x1080/?architecture,modern"
     },
     {
-      image: 'https://source.unsplash.com/random/1920x1080/?portrait',
-      title: 'PORTRAITS',
-      subtitle: 'Timeless Elegance'
+      title: "Sustainable Design",
+      subtitle: "Eco-friendly approaches for a better future",
+      image: "https://source.unsplash.com/random/1920x1080/?sustainable,architecture"
     },
     {
-      image: 'https://source.unsplash.com/random/1920x1080/?wedding',
-      title: 'EVENTS',
-      subtitle: 'Memorable Occasions'
+      title: "Urban Innovation",
+      subtitle: "Reshaping cities for tomorrow",
+      image: "https://source.unsplash.com/random/1920x1080/?urban,design"
     }
   ];
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    const timer = setInterval(() => {
       setActiveSection((prev) => (prev + 1) % sections.length);
-    }, 6000);
-    return () => clearInterval(interval);
-  }, []);
+    }, 5000);
 
-  return (
-    <div className="App">
-      <nav>
-        <div className="logo">STUDIO</div>
-        <div className="nav-links">
-          <a href="#portfolio">Portfolio</a>
-          <a href="#services">Services</a>
-          <a href="#about">About</a>
-          <a href="#contact" className="contact-btn">Contact</a>
-        </div>
-      </nav>
+    return () => clearInterval(timer);
+  }, [sections.length]);
 
+  const HomePage = () => (
+    <div className="home-page">
       <main>
         {sections.map((section, index) => (
           <section 
@@ -55,7 +53,6 @@ function App() {
             </div>
           </section>
         ))}
-
         <div className="scroll-indicator">
           {sections.map((_, index) => (
             <div 
@@ -66,20 +63,32 @@ function App() {
           ))}
         </div>
       </main>
-
-      <section className="portfolio-preview">
-        <div className="grid">
-          {[1, 2, 3, 4].map((item) => (
-            <div key={item} className="grid-item">
-              <img 
-                src={`https://source.unsplash.com/random/600x600/?photography,${item}`} 
-                alt={`Portfolio ${item}`}
-              />
-            </div>
-          ))}
-        </div>
-      </section>
     </div>
+  );
+
+  return (
+    <Router>
+      <div className="App">
+        <nav>
+          <div className="logo">STUDIO</div>
+          <ul className="nav-links">
+            <li><Link to="/">Home</Link></li>
+            <li><Link to="/portfolio">Portfolio</Link></li>
+            <li><Link to="/services">Services</Link></li>
+            <li><Link to="/about">About</Link></li>
+            <li><Link to="/contact" className="contact-btn">Contact</Link></li>
+          </ul>
+        </nav>
+
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/portfolio" element={<Portfolio />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
